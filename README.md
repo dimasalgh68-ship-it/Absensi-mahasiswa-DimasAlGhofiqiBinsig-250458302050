@@ -42,7 +42,7 @@ Pilih salah satu opsi berikut:
 
 ## Fitur & Pratinjau
 
-### User/Karyawan
+### User/Mahasiswa
 
 | Scan Page                                | Scan Page (Mobile)                                     |
 | ---------------------------------------- | ------------------------------------------------------ |
