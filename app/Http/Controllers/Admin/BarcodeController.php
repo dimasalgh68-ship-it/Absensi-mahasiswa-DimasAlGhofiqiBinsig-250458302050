@@ -49,6 +49,7 @@ class BarcodeController extends Controller
                 'latitude' => doubleval($request->lat),
                 'longitude' => doubleval($request->lng),
                 'radius' => $request->radius,
+                'expires_at' => now()->addMinutes(10), // 10 menit kedepan
             ]);
             return redirect()->route('admin.barcodes')->with('flash.banner', __('Created successfully.'));
         } catch (\Throwable $th) {
@@ -75,6 +76,7 @@ class BarcodeController extends Controller
                 'latitude' => doubleval($request->lat),
                 'longitude' => doubleval($request->lng),
                 'radius' => $request->radius,
+                'expires_at' => now()->addMinutes(10), // 10 menit kedepan
             ]);
             return redirect()->route('admin.barcodes')->with('flash.banner', __('Updated successfully.'));
         } catch (\Throwable $th) {

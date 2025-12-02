@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class JobTitleFactory extends Factory
 {
     public static $jobTitles = [
-        'Manager',
-        'Staff',
-        'Accounting',
-        'HRD',
-        'IT',
+        'Teknik Rekayasa Perangkat Lunak',
+        'teknik Informatika',
+        'Teknik Komputer',
+        'Teknik Elektro',
+        'Teknik Mesin',
     ];
 
     /**

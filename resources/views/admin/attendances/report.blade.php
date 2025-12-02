@@ -91,7 +91,7 @@
         </th>
         @if ($showUserDetail)
           <th scope="col">
-            {{ __('NIP') }}
+            {{ __('NIM') }}
           </th>
           <th scope="col">
             {{ __('Division') }}

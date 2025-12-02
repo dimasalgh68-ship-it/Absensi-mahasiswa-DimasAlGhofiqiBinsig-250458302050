@@ -53,6 +53,12 @@ class AttendanceComponent extends Component
         }
     }
 
+    public function show($attendanceId)
+    {
+        $this->currentAttendance = Attendance::find($attendanceId);
+        $this->showDetail = true;
+    }
+
     public function render()
     {
         if ($this->date) {

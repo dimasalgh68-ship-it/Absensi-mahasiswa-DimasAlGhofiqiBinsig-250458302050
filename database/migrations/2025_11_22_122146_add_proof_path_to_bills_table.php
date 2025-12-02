@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('bills', function (Blueprint $table) {
-            $table->string('proof_path')->nullable();
-        });
+        if (!Schema::hasColumn('bills', 'proof_path')) {
+            Schema::table('bills', function (Blueprint $table) {
+                $table->string('proof_path')->nullable();
+            });
+        }
     }
 
     /**
@@ -22,7 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('bills', function (Blueprint $table) {
-            //
+            $table->dropColumn('proof_path');
         });
     }
 };

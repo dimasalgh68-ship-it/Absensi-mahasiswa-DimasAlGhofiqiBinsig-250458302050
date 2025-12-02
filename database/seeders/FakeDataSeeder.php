@@ -13,12 +13,20 @@ class FakeDataSeeder extends Seeder
      */
     public function run(): void
     {
-        (new DatabaseSeeder)->run();
-        User::factory(10)->create();
+        // Jalankan seeder utama
+        $this->call(DatabaseSeeder::class);
+
+        // Generate 50 user random
+        User::factory(50)->create();
+
+        // Generate 1 user khusus untuk testing
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'user@example.com',
+            'password' => Hash::make('password'), // biar jelas
         ]);
-        (new AttendanceSeeder)->run();
+
+        // Jalankan AttendanceSeeder
+        $this->call(AttendanceSeeder::class);
     }
 }

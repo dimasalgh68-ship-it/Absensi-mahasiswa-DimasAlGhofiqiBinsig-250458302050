@@ -3,14 +3,14 @@
 namespace App\Livewire\Admin;
 
 use App\Models\Barcode;
+use Livewire\Component;
+use App\Models\Attendance;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Jetstream\InteractsWithBanner;
-use Livewire\Component;
 
 class BarcodeComponent extends Component
 {
     use InteractsWithBanner;
-
     public $deleteName = null;
     public $confirmingDeletion = false;
     public $selectedId = null;
@@ -28,6 +28,10 @@ class BarcodeComponent extends Component
             return abort(403);
         }
         $barcode = Barcode::find($this->selectedId);
+
+        // Set barcode_id to null in all related attendances to avoid foreign key constraint
+        Attendance::where('barcode_id', $this->selectedId)->update(['barcode_id' => null]);
+
         $barcode->delete();
         $this->confirmingDeletion = false;
         $this->selectedId = null;

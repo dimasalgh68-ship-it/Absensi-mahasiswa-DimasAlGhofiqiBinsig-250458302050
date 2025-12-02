@@ -4,7 +4,7 @@
       <th>#</th>
       <th>Date</th>
       <th>Name</th>
-      <th>NIP</th>
+      <th>NIM</th>
       <th>Time In</th>
       <th>Time Out</th>
       <th>Shift</th>
@@ -15,7 +15,6 @@
       <th>Attachment</th>
       <th>Created At</th>
       <th>Updated At</th>
-
       <th>User Id</th>
       <th>Shift Id</th>
       <th>Raw Status</th>

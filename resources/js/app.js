@@ -15,6 +15,57 @@ Alpine.store('darkMode', {
     }
 });
 
+Alpine.store('pageTransition', {
+    transition: 'fade', // Use only one modern transition
+    init() {
+        // Apply transition in on page load if stored
+        const storedTransition = localStorage.getItem('pageTransition');
+        if (storedTransition) {
+            const pageContent = document.querySelector('.page-content');
+            if (pageContent) {
+                pageContent.classList.add(`${this.transition}-in`);
+                // Remove after animation
+                setTimeout(() => {
+                    pageContent.classList.remove(`${this.transition}-in`);
+                }, 800);
+            }
+            localStorage.removeItem('pageTransition');
+        }
+
+        // Add event listeners to all navigation links
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('a[href]');
+            if (link && this.isInternalLink(link.href)) {
+                e.preventDefault();
+                this.handleNavigation(link.href);
+            }
+        });
+    },
+    isInternalLink(href) {
+        const url = new URL(href, window.location.origin);
+        return url.origin === window.location.origin;
+    },
+    handleNavigation(href) {
+        const pageContent = document.querySelector('.page-content');
+
+        if (pageContent) {
+            // Apply out transition
+            pageContent.classList.add(`${this.transition}-out`);
+
+            // Store transition for next page
+            localStorage.setItem('pageTransition', this.transition);
+
+            // Navigate after delay
+            setTimeout(() => {
+                window.location.href = href;
+            }, 400);
+        } else {
+            // No page-content, navigate immediately
+            window.location.href = href;
+        }
+    }
+});
+
 let map;
 
 window.initializeMap = ({ onUpdate, location }) => {

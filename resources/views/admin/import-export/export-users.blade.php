@@ -2,7 +2,7 @@
   <thead>
     <tr>
       <th>#</th>
-      <th>NIP</th>
+      <th>NIM</th>
       <th>Name</th>
       <th>Email</th>
       <th>Phone</th>

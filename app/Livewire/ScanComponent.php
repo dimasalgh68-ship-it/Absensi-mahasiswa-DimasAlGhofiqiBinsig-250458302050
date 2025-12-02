@@ -21,50 +21,56 @@ class ScanComponent extends Component
     public string $successMsg = '';
     public bool $isAbsence = false;
 
-    public function scan(string $barcode)
-    {
-        if (is_null($this->currentLiveCoords)) {
-            return __('Invalid location');
-        } else if (is_null($this->shift_id)) {
-            return __('Invalid shift');
-        }
-
-        /** @var Barcode */
-        $barcode = Barcode::firstWhere('value', $barcode);
-        if (!Auth::check() || !$barcode) {
-            return 'Invalid barcode';
-        }
-
-        $barcodeLocation = new LatLong($barcode->latLng['lat'], $barcode->latLng['lng']);
-        $userLocation = new LatLong($this->currentLiveCoords[0], $this->currentLiveCoords[1]);
-
-        if (($distance = $this->calculateDistance($userLocation, $barcodeLocation)) > $barcode->radius) {
-            return __('Location out of range') . ": $distance" . "m. Max: $barcode->radius" . "m";
-        }
-
-        /** @var Attendance */
-        $existingAttendance = Attendance::where('user_id', Auth::user()->id)
-            ->where('date', date('Y-m-d'))
-            ->where('barcode_id', $barcode->id)
-            ->first();
-
-        if (!$existingAttendance) {
-            $attendance = $this->createAttendance($barcode);
-            $this->successMsg = __('Attendance In Successful');
-        } else {
-            $attendance = $existingAttendance;
-            $attendance->update([
-                'time_out' => date('H:i:s'),
-            ]);
-            $this->successMsg = __('Attendance Out Successful');
-        }
-
-        if ($attendance) {
-            $this->setAttendance($attendance->fresh());
-            Attendance::clearUserAttendanceCache(Auth::user(), Carbon::parse($attendance->date));
-            return true;
-        }
+  public function scan(string $barcode)
+{
+    if (is_null($this->currentLiveCoords)) {
+        return __('Invalid location');
+    } else if (is_null($this->shift_id)) {
+        return __('Invalid shift');
     }
+
+    /** @var Barcode */
+    $barcode = Barcode::firstWhere('value', $barcode);
+    if (!Auth::check() || !$barcode) {
+        return 'Invalid barcode';
+    }
+
+    // Cek expired berdasarkan expires_at
+    if ($barcode->expires_at && Carbon::now()->gt(Carbon::parse($barcode->expires_at))) {
+        return 'expired'; // QR code expired
+    }
+
+    $barcodeLocation = new LatLong($barcode->latLng['lat'], $barcode->latLng['lng']);
+    $userLocation = new LatLong($this->currentLiveCoords[0], $this->currentLiveCoords[1]);
+
+    if (($distance = $this->calculateDistance($userLocation, $barcodeLocation)) > $barcode->radius) {
+        return __('Location out of range') . ": $distance" . "m. Max: $barcode->radius" . "m";
+    }
+
+    /** @var Attendance */
+    $existingAttendance = Attendance::where('user_id', Auth::user()->id)
+        ->where('date', date('Y-m-d'))
+        ->where('barcode_id', $barcode->id)
+        ->first();
+
+    if (!$existingAttendance) {
+        $attendance = $this->createAttendance($barcode);
+        $this->successMsg = __('Attendance In Successful');
+    } else {
+        $attendance = $existingAttendance;
+        $attendance->update([
+            'time_out' => date('H:i:s'),
+        ]);
+        $this->successMsg = __('Attendance Out Successful');
+    }
+
+    if ($attendance) {
+        $this->setAttendance($attendance->fresh());
+        Attendance::clearUserAttendanceCache(Auth::user(), Carbon::parse($attendance->date));
+        return true;
+    }
+}
+
 
     public function calculateDistance(LatLong $a, LatLong $b)
     {

@@ -1,4 +1,4 @@
-<div class="p-6 lg:p-8 bg-blue-300">
+<div class="p-6 lg:p-8 bg-blue-200">
   <script src="{{ url('/assets/js/qrcode.min.js') }}"></script>
   <x-button class="mb-4 mr-2" href="{{ route('admin.barcodes.create') }}">
     Buat Barcode Baru
@@ -77,8 +77,7 @@
         <div class="text-center text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2" x-text="
           remaining > 0
             ? 'QR Code valid for ' + Math.floor(remaining / 60) + 'm ' + (remaining % 60) + 's'
-            : 'QR Code expired'
-        "></div>
+            : 'QR Code expired'"></div>
 
         <h3 class="mb-3 text-center text-lg font-semibold leading-tight text-gray-800 dark:text-white">
           {{ $barcode->name }}

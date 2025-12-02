@@ -7,7 +7,7 @@
       @endphp
       <h3 class="mb-3 text-xl font-semibold dark:text-white">{{ $currentAttendance['name'] }}</h3>
       <div class="mb-3 w-full">
-        <x-label for="nip" value="{{ __('NIP') }}"></x-label>
+        <x-label for="nip" value="{{ __('NIM') }}"></x-label>
         <x-input type="text" class="w-full" id="nip" disabled value="{{ $currentAttendance['nip'] }}"></x-input>
       </div>
       <div class="mb-3 flex w-full gap-3">
@@ -86,11 +86,14 @@
     function setLocation(lat, lng) {
       removeMap();
       setTimeout(() => {
-        map = L.map('map').setView([Number(lat), Number(lng)], 19);
-        L.marker([Number(lat), Number(lng)]).addTo(map);
-        L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-          maxZoom: 21,
-        }).addTo(map);
+        const mapContainer = document.getElementById('map');
+        if (mapContainer) {
+          map = L.map('map').setView([Number(lat), Number(lng)], 19);
+          L.marker([Number(lat), Number(lng)]).addTo(map);
+          L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 21,
+          }).addTo(map);
+        }
       }, 500);
     }
 

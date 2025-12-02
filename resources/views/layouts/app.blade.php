@@ -11,6 +11,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.bunny.net">
   <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" href="{{ asset('images/favicon.png') }}">
 
   <!-- Scripts -->
   @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -21,15 +22,15 @@
   @stack('styles')
 </head>
 
-<body class="font-sans antialiased">
+<body class="font-sans antialiased ">
   <x-banner />
 
-  <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+  <div class="min-h-screen bg-gradient-to-br from-blue-100 to-blue-600 dark:bg-gray-900">
     @livewire('navigation-menu')
 
     <!-- Page Heading -->
     @if (isset($header))
-      <header class="bg-blue-100 shadow dark:bg-gray-800">
+      <header class="bg-blue-100 shadow dark:bg-gray-800 ">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
           {{ $header }}
         </div>
@@ -37,7 +38,7 @@
     @endif
 
     <!-- Page Content -->
-    <main>
+    <main class="page-content">
       {{ $slot }}
     </main>
   </div>

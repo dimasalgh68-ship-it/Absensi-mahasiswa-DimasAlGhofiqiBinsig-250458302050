@@ -8,21 +8,27 @@ use App\Http\Controllers\Admin\EmployeeController;
 use App\Http\Controllers\Admin\ImportExportController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserAttendanceController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\TaskCommentController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Livewire\Livewire;
 
 Route::get('/', function () {
-    // return view('welcome');
-    return redirect('/login');
+    return view('landing');
 });
+
+Route::view('/about', 'about')->name('about');
 
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/', fn () => Auth::user()->isAdmin ? redirect('/admin') : redirect('/home'));
+    // Route::get('/', fn () => Auth::user()->isAdmin ? redirect('/admin') : redirect('/home'));
+
+    Route::get('/logout', function () {
+        return view('auth.logout');
+    })->name('logout.confirm');
 
     // USER AREA
     Route::middleware('user')->group(function () {
@@ -39,6 +45,19 @@ Route::middleware([
         Route::get('/bills', function () {
             return view('user.bills');
         })->name('user.bills');
+        
+        Route::get('/tasks', function () {
+            return view('user.tasks');
+        })->name('user.tasks');
+
+        Route::get('/tasks/{task}/detail', [UserAttendanceController::class, 'taskDetail'])
+            ->name('user.tasks.detail');
+        Route::get('/tasks/{task}/submit', [UserAttendanceController::class, 'taskSubmit'])
+            ->name('user.tasks.submit');
+        Route::post('/tasks/{task}/submit', [UserAttendanceController::class, 'storeTaskSubmission'])
+            ->name('user.tasks.submit.store');
+        Route::get('/my-answers', [UserAttendanceController::class, 'myAnswers'])
+            ->name('user.tasks.answers');
     });
 
     // ADMIN AREA
@@ -109,14 +128,20 @@ Route::middleware([
         Route::get('/bills', function () {
             return view('admin.bills');
         })->name('admin.bills');
+
+        // Tasks
+        Route::resource('/tasks', TaskController::class)
+            ->names([
+                'index' => 'admin.tasks',
+                'create' => 'admin.tasks.create',
+                'store' => 'admin.tasks.store',
+                'show' => 'admin.tasks.show',
+                'edit' => 'admin.tasks.edit',
+                'update' => 'admin.tasks.update',
+                'destroy' => 'admin.tasks.destroy',
+            ]);
+
+        Route::any('/tasks/{task}/submissions/{submission}/update-status', [TaskController::class, 'updateSubmissionStatus'])
+            ->name('admin.tasks.submissions.update-status');
     });
-});
-
-Livewire::setUpdateRoute(function ($handle) {
-    return Route::post(Helpers::getNonRootBaseUrlPath() . '/livewire/update', $handle);
-});
-
-Livewire::setScriptRoute(function ($handle) {
-    $path = config('app.debug') ? '/livewire/livewire.js' : '/livewire/livewire.min.js';
-    return Route::get(url($path), $handle);
 });

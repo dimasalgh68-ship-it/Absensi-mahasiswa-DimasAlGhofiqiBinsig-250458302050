@@ -1,7 +1,64 @@
 @php
   $date = Carbon\Carbon::now();
 @endphp
-<div>
+<div>{{-- Grafik Statistik --}}
+@pushOnce('styles')
+  <style>
+    #attendanceChart {
+      max-height: 300px;
+    }
+  </style>
+@endpushOnce
+
+<div class="mt-6 mb-6 rounded-lg bg-white p-4 shadow dark:bg-gray-800">
+  <h3 class="mb-3 text-lg font-semibold text-gray-800 dark:text-gray-200">
+    Grafik Statistik Absensi Hari Ini
+  </h3>
+  <canvas id="attendanceChart"></canvas>
+</div>
+
+@pushOnce('scripts')
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    document.addEventListener('livewire:init', () => {
+      let ctx = document.getElementById('attendanceChart').getContext('2d');
+
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: ['Hadir', 'Terlambat', 'Izin', 'Sakit', 'Tidak Hadir'],
+          datasets: [{
+            label: 'Jumlah',
+            data: [
+              {{ $presentCount }},
+              {{ $lateCount }},
+              {{ $excusedCount }},
+              {{ $sickCount }},
+              {{ $absentCount }}
+            ],
+            backgroundColor: [
+              'rgba(34,197,94,0.7)',   // green
+              'rgba(251,191,36,0.7)', // amber
+              'rgba(59,130,246,0.7)', // blue
+              'rgba(147,51,234,0.7)', // purple
+              'rgba(239,68,68,0.7)'   // red
+            ],
+            borderWidth: 1,
+            borderColor: 'rgba(0,0,0,0.1)'
+          }]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: { beginAtZero: true }
+          }
+        }
+      });
+    });
+  </script>
+@endpushOnce
+{{-- Tabel Absensi Harian --}}
+<div class="mt-6 mb-6">
   @pushOnce('styles')
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
@@ -19,22 +76,22 @@
       <span class="text-2xl font-semibold md:text-3xl">Hadir: {{ $presentCount }}</span><br>
       <span>Terlambat: {{ $lateCount }}</span>
     </div>
-    <div class="rounded-md bg-blue-200 px-8 py-4 text-gray-800 dark:bg-blue-900 dark:text-white dark:shadow-gray-700">
+    <div class="rounded-md bg-blue-400 px-8 py-4 text-gray-800 dark:bg-blue-900 dark:text-white dark:shadow-gray-700">
       <span class="text-2xl font-semibold md:text-3xl">Izin: {{ $excusedCount }}</span><br>
       <span>Izin/Cuti</span>
     </div>
     <div
-      class="rounded-md bg-purple-200 px-8 py-4 text-gray-800 dark:bg-purple-900 dark:text-white dark:shadow-gray-700">
+      class="rounded-md bg-purple-300 px-8 py-4 text-gray-800 dark:bg-purple-900 dark:text-white dark:shadow-gray-700">
       <span class="text-2xl font-semibold md:text-3xl">Sakit: {{ $sickCount }}</span>
     </div>
-    <div class="rounded-md bg-red-200 px-8 py-4 text-gray-800 dark:bg-red-900 dark:text-white dark:shadow-gray-700">
+    <div class="rounded-md bg-red-300 px-8 py-4 text-gray-800 dark:bg-red-900 dark:text-white dark:shadow-gray-700">
       <span class="text-2xl font-semibold md:text-3xl">Tidak Hadir: {{ $absentCount }}</span><br>
       <span>Tidak/Belum Hadir</span>
     </div>
   </div>
 
-  <div class="mb-4 overflow-x-scroll">
-    <table class="w-full divide-y divide-gray-200 dark:divide-gray-700">
+  <div class="mb-4 overflow-x-scroll rounded">
+    <table class="w-full divide-y divide-gray-200 dark:divide-gray-700 ">
       <thead class="bg-gray-50 dark:bg-gray-900">
         <tr>
           <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300">

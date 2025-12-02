@@ -28,7 +28,7 @@
                                     NIM: {{ auth()->user()->nim }}
                                 </div>
                                 <div class="text-sm text-gray-500 dark:text-gray-400">
-                                    kirim ke No Rekening:<br> {{ 70212123213 }}-admin
+                                    kirim ke No Rekening:<br>Bsi {{ 70212123213 }}-admin
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                     @if($bill->status === 'unpaid')
                         <x-button
                             wire:click="openUploadModal({{ $bill->id }})"
-                            class="bg-blue-600 hover:bg-blue-700 text-xs px-3 py-2"
+                            class="bg-blue-200 hover:bg-blue-200 text-xs px-3 py-2"
                         >
                             {{ __('Upload Proof') }}
                         </x-button>

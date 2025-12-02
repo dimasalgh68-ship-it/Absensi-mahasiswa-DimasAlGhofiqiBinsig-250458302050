@@ -11,7 +11,7 @@
         <h3 class="text-lg font-semibold leading-tight text-gray-800 dark:text-gray-200 mb-4 sm:mb-0">
             {{ __('Bills') }}
         </h3>
-        <x-button wire:click="openCreateModal" class="bg-blue-600 hover:bg-blue-700">
+        <x-button wire:click="openCreateModal" class="bg-blue-200 hover:bg-blue-200">
             {{ __('Add Bill') }}
         </x-button>
     </div>
@@ -38,7 +38,7 @@
     <!-- Bills Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         @forelse($bills as $bill)
-            <div class="bg-blue-100 dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg hover:shadow-2xl transition-shadow duration-300">
+            <div class="bg-gray-200 dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg hover:shadow-2xl transition-shadow duration-300">
                 <div class="p-6">
                     <div class="flex items-center justify-between mb-4">
                         <div class="flex items-center">
@@ -186,11 +186,7 @@
                     <x-input-error for="due_date" />
                 </div>
 
-                <div>
-                    <x-label for="proof" value="{{ __('Proof of Transfer') }}" />
-                    <x-input wire:model="proof" id="proof" type="file" class="w-full" accept="image/*,.pdf" />
-                    <x-input-error for="proof" />
-                </div>
+              
             </div>
         </x-slot>
 

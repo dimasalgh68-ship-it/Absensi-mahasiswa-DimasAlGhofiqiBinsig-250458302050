@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="border-b border-gray-100 bg-white dark:border-gray-700 dark:bg-gray-800">
+<nav x-data="{ open: false }" class="sticky top-0 z-50 border-b border-gray-100 bg-gray-100 dark:border-gray-700 dark:bg-gray-800 ">
   <!-- Primary Navigation Menu -->
   <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
     <div class="flex h-16 justify-between">
@@ -27,6 +27,9 @@
             </x-nav-link>
             <x-nav-link class="hidden md:inline-flex" href="{{ route('admin.employees') }}" :active="request()->routeIs('admin.employees')">
               {{ __('Mahasiswa') }}
+            </x-nav-link>
+            <x-nav-link href="{{ route('admin.tasks') }}" :active="request()->routeIs('admin.tasks')">
+              {{ __('Tugas') }}
             </x-nav-link>
             <x-nav-dropdown :active="request()->routeIs('admin.masters.*')" triggerClasses="text-nowrap">
               <x-slot name="trigger">
@@ -73,9 +76,15 @@
               </x-slot>
             </x-nav-dropdown>
           @else
-            <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
-              {{ __('Home') }}
-            </x-nav-link>
+                        <x-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
+                            {{ __('Home') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('user.tasks') }}" :active="request()->routeIs('user.tasks*')">
+                            {{ __('Tugas') }}
+                        </x-nav-link>
+                        <x-nav-link href="{{ route('user.tasks.answers') }}" :active="request()->routeIs('user.tasks.answers')">
+                            {{ __('Jawaban Saya') }}
+                        </x-nav-link>
           @endif
         </div>
       </div>
@@ -128,13 +137,9 @@
                 <div class="border-t border-gray-200 dark:border-gray-600"></div>
 
                 <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}" x-data>
-                  @csrf
-
-                  <x-dropdown-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-                    {{ __('Log Out') }}
-                  </x-dropdown-link>
-                </form>
+                <x-dropdown-link href="{{ route('logout.confirm') }}">
+                  {{ __('Log Out') }}
+                </x-dropdown-link>
               </x-slot>
             </x-dropdown>
           </div>
@@ -202,6 +207,9 @@
         <x-responsive-nav-link href="{{ route('home') }}" :active="request()->routeIs('home')">
           {{ __('Home') }}
         </x-responsive-nav-link>
+        <x-responsive-nav-link href="{{ route('user.bills') }}" :active="request()->routeIs('user.bills')">
+          {{ __('Tagihan') }}
+        </x-responsive-nav-link>
       @endif
     </div>
 
@@ -234,13 +242,9 @@
         @endif
 
         <!-- Authentication -->
-        <form method="POST" action="{{ route('logout') }}" x-data>
-          @csrf
-
-          <x-responsive-nav-link href="{{ route('logout') }}" @click.prevent="$root.submit();">
-            {{ __('Log Out') }}
-          </x-responsive-nav-link>
-        </form>
+        <x-responsive-nav-link href="{{ route('logout.confirm') }}" :active="request()->routeIs('logout.confirm')">
+          {{ __('Log Out') }}
+        </x-responsive-nav-link>
       </div>
     </div>
   </div>

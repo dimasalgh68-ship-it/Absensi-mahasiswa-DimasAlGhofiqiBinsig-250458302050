@@ -12,14 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::dropIfExists('bills');
+
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+
+            // User menggunakan ULID (char 26)
+            $table->char('user_id', 26);
+            $table->foreign('user_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
+
             $table->string('description');
             $table->decimal('amount', 15, 2);
             $table->enum('status', ['unpaid', 'paid'])->default('unpaid');
             $table->date('due_date')->nullable();
             $table->timestamp('paid_at')->nullable();
+
             $table->timestamps();
         });
     }

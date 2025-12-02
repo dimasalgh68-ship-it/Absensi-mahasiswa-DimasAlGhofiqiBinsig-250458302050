@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DivisionFactory extends Factory
 {
-    static $divisions = ['Divisi 1', 'Divisi 2', 'Divisi 3', 'Divisi 4'];
+    static $divisions = ['Ang 2023', 'Ang 2025', 'Ang 2026', 'Ang 2027', 'Ang 2028'];
 
     /**
      * Define the model's default state.
